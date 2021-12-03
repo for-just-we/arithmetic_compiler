@@ -21,6 +21,8 @@ def next_token(src: bytes, program_state: dict):
     # 清除空格
     while program_state['cur'] < len(src) and (src[program_state['cur']] == ord(' ') or src[program_state['cur']] == ord('\t')):
         program_state['cur'] += 1
+    if program_state['cur'] >= len(src): # 处理异常
+        return
 
 
 def match(tk: int, src: bytes, program_state: dict):
@@ -28,6 +30,12 @@ def match(tk: int, src: bytes, program_state: dict):
     while program_state['cur'] < len(src) and (
             src[program_state['cur']] == ord(' ') or src[program_state['cur']] == ord('\t')):
         program_state['cur'] += 1
+    if program_state['cur'] >= len(src): # 处理异常
+        if tk == 5:
+            print(f"expected token: Num, however missed")
+        else:
+            print(f"expected token: {chr(tk)}, however missed")
+        exit(-1)
 
     if tk == 5: # match(Num)
         if src[program_state['cur']] < ord('0') and src[program_state['cur']] > ord('9'):
