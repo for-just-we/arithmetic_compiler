@@ -37,14 +37,16 @@ from parse import match
 # 返回该表达式的值
 def expr(src, program_state) -> int:
     if program_state['cur'] >= len(src): # 处理异常
-        return 0
+        print(f"expected complete expression")
+        exit(-1)
 
     lvalue: int = term(src, program_state)
     return expr_tail(lvalue, src, program_state)
 
 def factor(src, program_state)-> int:
     if program_state['cur'] >= len(src): # 处理异常
-        return 0
+        print(f"expected complete expression")
+        exit(-1)
 
     if src[program_state['cur']] == ord('('): # ( <expr> )
         match(ord('('), src, program_state)
@@ -78,7 +80,8 @@ def term_tail(left_value, src, program_state) -> int:
 
 def term(src, program_state) -> int: # factor term_tail
     if program_state['cur'] >= len(src): # 处理异常
-        return 0
+        print(f"expected complete expression")
+        exit(-1)
 
     lvalue: int = factor(src, program_state)
     return term_tail(lvalue, src, program_state)
